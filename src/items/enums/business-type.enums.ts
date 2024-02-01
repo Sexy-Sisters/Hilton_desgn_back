@@ -1,0 +1,10 @@
+export enum BusinessType {
+  CAFE = 'CAFE',
+  HOTEL = 'HOTEL',
+  HOSPITAL = 'HOSPITAL',
+  SCHOOL = 'SCHOOL',
+  OFFICE = 'OFFICE',
+  PUBLIC_INSTITUTION = 'PUBLIC_INSTITUTION',
+  LOBBY = 'LOBBY',
+  LOUNGE = 'LOUNGE',
+}
