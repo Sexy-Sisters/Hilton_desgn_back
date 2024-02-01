@@ -21,4 +21,7 @@ export class OptionGroup {
 
   @ManyToOne(() => Item, (item) => item.optionGroups)
   item: Item;
+
+  @Column()
+  itemId: string;
 }

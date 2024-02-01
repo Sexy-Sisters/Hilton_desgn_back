@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dtos/create-item.dto';
 
@@ -9,5 +9,10 @@ export class ItemsController {
   @Post()
   async createItem(@Body() createItemDto: CreateItemDto) {
     return await this.itemsService.createItem(createItemDto);
+  }
+
+  @Get('/recommend')
+  async getRecommendItems(@Query('limit') limit: number) {
+    return await this.itemsService.getRecommendItems(limit);
   }
 }
