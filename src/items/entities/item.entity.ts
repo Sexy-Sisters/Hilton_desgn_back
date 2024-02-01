@@ -30,11 +30,11 @@ export class Item {
   @Column()
   thumbnailImage: string;
 
-  @Column()
-  itemImages: string;
+  @Column({ type: 'text', array: true })
+  itemImages: string[];
 
-  @Column()
-  detailImages: string;
+  @Column({ type: 'text', array: true })
+  detailImages: string[];
 
   @Column()
   category: string;
@@ -42,11 +42,11 @@ export class Item {
   @Column()
   subcategory: string;
 
-  @Column()
-  colors: string;
+  @Column({ type: 'text', array: true })
+  colors: string[];
 
-  @Column({ type: 'enum', enum: BusinessType })
-  businessType: BusinessType;
+  @Column({ type: 'enum', enum: BusinessType, array: true })
+  businessType: BusinessType[];
 
   @Column({ type: 'enum', enum: ItemType })
   type: ItemType;
