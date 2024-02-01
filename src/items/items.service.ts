@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Item } from './entities/item.entity';
 import { Repository } from 'typeorm';
@@ -76,5 +76,20 @@ export class ItemsService {
         await this.optionRepository.save(newOption);
       }
     }
+  }
+
+  async getDetailItem(id: string) {
+    const item = this.itemRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['optionGroups', 'optionGroups.options'],
+    });
+
+    if (!item) {
+      throw new NotFoundException();
+    }
+
+    return item;
   }
 }

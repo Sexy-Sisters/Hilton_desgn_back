@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dtos/create-item.dto';
 
@@ -14,5 +14,10 @@ export class ItemsController {
   @Get('/recommend')
   async getRecommendItems(@Query('limit') limit: number) {
     return await this.itemsService.getRecommendItems(limit);
+  }
+
+  @Get('/:id')
+  async getDetailItem(@Param('id') id: string) {
+    return await this.itemsService.getDetailItem(id);
   }
 }
