@@ -6,6 +6,7 @@ import { Option } from './entities/option.entity';
 import { OptionGroup } from './entities/option-group.entity';
 import { CreateItemDto } from './dtos/create-item.dto';
 import { ItemType } from './enums/item-type.enums';
+import { ItemQuery } from './dtos/item-query.dto';
 
 @Injectable()
 export class ItemsService {
@@ -39,6 +40,49 @@ export class ItemsService {
     }
   }
 
+  async getItemsWithFilter(itemQuery: ItemQuery): Promise<Item[]> {
+    const {
+      q,
+      page = 1,
+      pageSize = 50,
+      order,
+      category = 'ALL',
+      subcategory,
+    } = itemQuery;
+
+    let price: 'ASC' | 'DESC' | undefined;
+    let createdAt: 'ASC' | 'DESC' | undefined;
+
+    if (order === '높은 가격') {
+      price = 'DESC';
+    } else if (order === '낮은 가격') {
+      price = 'ASC';
+    } else if (order === '최신순') {
+      createdAt = 'DESC';
+    }
+
+    const queryBuilder = this.itemRepository
+      .createQueryBuilder('item')
+      .where(q ? `item.name LIKE :q` : '1=1', { q: `%${q}%` })
+      .andWhere(category === 'ALL' ? '1=1' : 'item.category = :category', {
+        category,
+      })
+      .andWhere(subcategory ? 'item.subcategory = :subcategory' : '1=1', {
+        subcategory,
+      });
+
+    if (price) {
+      queryBuilder.orderBy({ 'item.price': price });
+    }
+    if (createdAt) {
+      queryBuilder.orderBy({ 'item.createdAt': createdAt });
+    }
+
+    queryBuilder.skip((page - 1) * pageSize).take(pageSize);
+
+    return queryBuilder.getMany();
+  }
+
   async getRecommendItems(limit?: number): Promise<Item[]> {
     return await this.itemRepository
       .createQueryBuilder('item')
@@ -50,8 +94,8 @@ export class ItemsService {
       .getMany();
   }
 
-  async updateItem(id: string, createItemDto: CreateItemDto): Promise<void> {
-    const { optionGroupList = [], ...itemData } = createItemDto;
+  async updateItem(id: string, updateItemDto: CreateItemDto): Promise<void> {
+    const { optionGroupList = [], ...itemData } = updateItemDto;
 
     // Delete existing option groups
     await this.optionGroupRepo.delete({ itemId: id });
@@ -91,5 +135,10 @@ export class ItemsService {
     }
 
     return item;
+  }
+
+  async deleteItem(id: string) {
+    await this.itemRepository.delete(id);
+    return;
   }
 }
