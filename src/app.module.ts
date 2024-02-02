@@ -17,6 +17,7 @@ import { ItemsModule } from './items/items.module';
 import { Item } from './items/entities/item.entity';
 import { OptionGroup } from './items/entities/option-group.entity';
 import { Option } from './items/entities/option.entity';
+import { CartsModule } from './carts/carts.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -36,6 +37,7 @@ import { Option } from './items/entities/option.entity';
     AuthModule,
     UsersModule,
     ItemsModule,
+    CartsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
