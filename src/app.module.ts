@@ -24,6 +24,9 @@ import { Order } from './orders/entities/order.entity';
 import { OrderItem } from './orders/entities/order-item.entity';
 import { OrderItemOption } from './orders/entities/order-item-option.entity';
 import { MagazinesModule } from './magazines/magazines.module';
+import { Magazine } from './magazines/entities/magazine.entity';
+import { TopSearchedModule } from './top-searched/top-searched.module';
+import { TopSearched } from './top-searched/entities/top-searched.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -46,6 +49,8 @@ import { MagazinesModule } from './magazines/magazines.module';
         Order,
         OrderItem,
         OrderItemOption,
+        Magazine,
+        TopSearched,
       ],
       synchronize: true,
     }),
@@ -55,6 +60,7 @@ import { MagazinesModule } from './magazines/magazines.module';
     CartsModule,
     OrdersModule,
     MagazinesModule,
+    TopSearchedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

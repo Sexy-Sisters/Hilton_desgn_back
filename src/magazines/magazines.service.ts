@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Magazine } from './entities/magazine.entity';
 import { Like, Repository } from 'typeorm';
 import { CreateMagazineDto } from './dto/create-magazine.dto';
-import { UpdateMagazineDto } from './dto/update-magazine.dto';
 
 @Injectable()
 export class MagazinesService {
