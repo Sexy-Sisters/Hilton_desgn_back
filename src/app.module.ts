@@ -23,6 +23,7 @@ import { OrdersModule } from './orders/orders.module';
 import { Order } from './orders/entities/order.entity';
 import { OrderItem } from './orders/entities/order-item.entity';
 import { OrderItemOption } from './orders/entities/order-item-option.entity';
+import { MagazinesModule } from './magazines/magazines.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -53,6 +54,7 @@ import { OrderItemOption } from './orders/entities/order-item-option.entity';
     ItemsModule,
     CartsModule,
     OrdersModule,
+    MagazinesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
