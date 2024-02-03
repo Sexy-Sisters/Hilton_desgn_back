@@ -1,26 +1,83 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
-
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CartItem } from './entities/cart-item.entity';
+import { CreateCartItemDto } from './dto/create-cart-item.dto';
+import { ItemsService } from 'src/items/items.service';
 @Injectable()
 export class CartsService {
-  create(createCartDto: CreateCartDto) {
-    return 'This action adds a new cart';
+  constructor(
+    @InjectRepository(CartItem)
+    private readonly cartItemRepository: Repository<CartItem>,
+    private readonly itemsService: ItemsService,
+  ) {}
+
+  async addCartItem(userId: string, createCartItemDto: CreateCartItemDto) {
+    const { itemId, optionIds, color, quantity } = createCartItemDto;
+    const item = await this.itemsService.getDetailItem(itemId);
+    if (!item) throw new NotFoundException();
+
+    const cartItem = this.cartItemRepository.create({
+      user: { id: userId },
+      itemId,
+      color,
+      quantity,
+    });
+    cartItem.options = [];
+
+    for (const optionId of optionIds) {
+      const option = await this.itemsService.getOptionDetail(optionId);
+      if (item.id != option.optionGroup.item.id)
+        throw new BadRequestException();
+      cartItem.options.push(option);
+    }
+
+    const savedCartItem = await this.cartItemRepository.save(cartItem);
+    return {
+      ...savedCartItem,
+      options: savedCartItem.options.map((option) => {
+        const optionGroupName = option.optionGroup.name;
+        delete option.optionGroup;
+        return {
+          ...option,
+          optionGroupName,
+        };
+      }),
+    };
   }
 
-  findAll() {
-    return `This action returns all carts`;
+  async getMyCartItems(userId: string) {
+    const items = await this.cartItemRepository.find({
+      where: { user: { id: userId } },
+      relations: ['options', 'options.optionGroup'],
+    });
+    return items.map((item) => {
+      return {
+        ...item,
+        options: item.options.map((option) => {
+          const ret = {
+            ...option,
+            optionGroupName: option.optionGroup.name,
+          };
+          delete ret.optionGroup;
+
+          return ret;
+        }),
+      };
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cart`;
+  async getCountMyItems(userId: string) {
+    return await this.cartItemRepository.count({
+      where: { user: { id: userId } },
+    });
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+  async deleteCartItemById(cartId: string) {
+    return await this.cartItemRepository.delete(cartId);
   }
 }

@@ -1,34 +1,46 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CartsService } from './carts.service';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { CreateCartItemDto } from './dto/create-cart-item.dto';
+import { CurrentUser } from 'src/decorators/current-user.decorators';
+import { User } from 'src/users/entities/user.entity';
+import { UserGuard } from 'src/auth/guards/User.guard';
 
 @Controller('carts')
 export class CartsController {
   constructor(private readonly cartsService: CartsService) {}
 
-  @Post()
-  create(@Body() createCartDto: CreateCartDto) {
-    return this.cartsService.create(createCartDto);
+  @Post('/')
+  @UseGuards(UserGuard)
+  async addCartItem(
+    @CurrentUser() user: User,
+    @Body() createCartItemDto: CreateCartItemDto,
+  ) {
+    return this.cartsService.addCartItem(user.id, createCartItemDto);
   }
 
-  @Get()
-  findAll() {
-    return this.cartsService.findAll();
+  @Get('/')
+  @UseGuards(UserGuard)
+  async getMyCartItem(@CurrentUser() user: User) {
+    return this.cartsService.getMyCartItems(user.id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cartsService.findOne(+id);
+  @Get('/count')
+  @UseGuards(UserGuard)
+  async getCountMyItems(@CurrentUser() user: User) {
+    return await this.cartsService.getCountMyItems(user.id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartsService.update(+id, updateCartDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartsService.remove(+id);
+  @Delete('/:id')
+  @UseGuards(UserGuard)
+  async deleteCartItem(@Param('id') cartItemId: string) {
+    return await this.cartsService.deleteCartItemById(cartItemId);
   }
 }

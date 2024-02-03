@@ -1,6 +1,7 @@
 import { Timestamp } from 'src/common/entities/base.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '../enums/role.enum';
+import { CartItem } from 'src/carts/entities/cart-item.entity';
 
 @Entity()
 export class User extends Timestamp {
@@ -24,4 +25,7 @@ export class User extends Timestamp {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
+
+  @OneToMany(() => CartItem, (cartItem) => cartItem.user)
+  cartItems: CartItem[];
 }

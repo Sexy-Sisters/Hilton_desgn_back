@@ -141,4 +141,11 @@ export class ItemsService {
     await this.itemRepository.delete(id);
     return;
   }
+
+  async getOptionDetail(id: string) {
+    return await this.optionRepository.findOne({
+      where: { id },
+      relations: ['optionGroup', 'optionGroup.item'],
+    });
+  }
 }

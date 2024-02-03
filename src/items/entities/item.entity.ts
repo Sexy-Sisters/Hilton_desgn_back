@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -9,6 +10,7 @@ import { ItemStatus } from '../enums/item-status.enums';
 import { ItemType } from '../enums/item-type.enums';
 import { BusinessType } from '../enums/business-type.enums';
 import { OptionGroup } from './option-group.entity';
+import { CartItem } from 'src/carts/entities/cart-item.entity';
 
 @Entity()
 export class Item {
@@ -59,4 +61,7 @@ export class Item {
 
   @OneToMany(() => OptionGroup, (optionGroup) => optionGroup.item)
   optionGroups: OptionGroup[];
+
+  @ManyToOne(() => CartItem, (cartItem) => cartItem.item)
+  cartItems: CartItem[];
 }

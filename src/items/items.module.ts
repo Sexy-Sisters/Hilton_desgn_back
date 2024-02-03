@@ -10,5 +10,6 @@ import { OptionGroup } from './entities/option-group.entity';
   imports: [TypeOrmModule.forFeature([Item, Option, OptionGroup])],
   controllers: [ItemsController],
   providers: [ItemsService],
+  exports: [ItemsService],
 })
 export class ItemsModule {}
