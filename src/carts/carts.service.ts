@@ -23,7 +23,7 @@ export class CartsService {
 
     const cartItem = this.cartItemRepository.create({
       user: { id: userId },
-      itemId,
+      item: { id: itemId },
       color,
       quantity,
     });
@@ -53,8 +53,9 @@ export class CartsService {
   async getMyCartItems(userId: string) {
     const items = await this.cartItemRepository.find({
       where: { user: { id: userId } },
-      relations: ['options', 'options.optionGroup'],
+      relations: ['options', 'options.optionGroup', 'item'],
     });
+    console.log(items);
     return items.map((item) => {
       return {
         ...item,

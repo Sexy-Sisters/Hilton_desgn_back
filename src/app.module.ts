@@ -20,6 +20,9 @@ import { Option } from './items/entities/option.entity';
 import { CartsModule } from './carts/carts.module';
 import { CartItem } from './carts/entities/cart-item.entity';
 import { OrdersModule } from './orders/orders.module';
+import { Order } from './orders/entities/order.entity';
+import { OrderItem } from './orders/entities/order-item.entity';
+import { OrderItemOption } from './orders/entities/order-item-option.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -33,7 +36,16 @@ import { OrdersModule } from './orders/orders.module';
       username: process.env[ENV_DB_USERNAME_KEY],
       password: process.env[ENV_DB_PASSWORD_KEY],
       database: process.env[ENV_DB_DATABASE_KEY],
-      entities: [User, Item, Option, OptionGroup, CartItem],
+      entities: [
+        User,
+        Item,
+        Option,
+        OptionGroup,
+        CartItem,
+        Order,
+        OrderItem,
+        OrderItemOption,
+      ],
       synchronize: true,
     }),
     AuthModule,

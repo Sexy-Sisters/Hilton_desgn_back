@@ -8,7 +8,6 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -26,11 +25,8 @@ export class CartItem {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => Item, (item) => item.cartItems)
+  @ManyToOne(() => Item, (item) => item.cartItems)
   item: Item;
-
-  @Column()
-  itemId: string;
 
   @ManyToMany(() => Option, {})
   @JoinTable()
