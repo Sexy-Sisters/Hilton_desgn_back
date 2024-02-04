@@ -12,8 +12,10 @@ import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { CurrentUser } from 'src/decorators/current-user.decorators';
 import { User } from 'src/users/entities/user.entity';
 import { UserGuard } from 'src/auth/guards/User.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('carts')
+@ApiTags('carts')
 export class CartsController {
   constructor(private readonly cartsService: CartsService) {}
 

@@ -11,8 +11,10 @@ import {
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dtos/create-item.dto';
 import { ItemQuery } from './dtos/item-query.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('items')
+@ApiTags('items')
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 

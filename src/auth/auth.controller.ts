@@ -7,7 +7,10 @@ import { AdminGuard } from './guards/admin.guard';
 import { UserGuard } from './guards/User.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorators';
 import { User } from 'src/users/entities/user.entity';
+import { ApiTags } from '@nestjs/swagger';
+
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

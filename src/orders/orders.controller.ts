@@ -13,8 +13,10 @@ import { CurrentUser } from 'src/decorators/current-user.decorators';
 import { User } from 'src/users/entities/user.entity';
 import { UserGuard } from 'src/auth/guards/User.guard';
 import { OrderStatus } from './enums/order-status.enums';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('orders')
+@ApiTags('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
