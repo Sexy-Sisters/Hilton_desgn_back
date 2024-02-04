@@ -4,9 +4,9 @@ import { Item } from './entities/item.entity';
 import { Repository } from 'typeorm';
 import { Option } from './entities/option.entity';
 import { OptionGroup } from './entities/option-group.entity';
-import { CreateItemDto } from './dtos/create-item.dto';
+import { CreateItemDto } from './dtos/request/create-item.dto';
 import { ItemType } from './enums/item-type.enums';
-import { ItemQuery } from './dtos/item-query.dto';
+import { ItemQuery } from './dtos/request/item-query.dto';
 
 @Injectable()
 export class ItemsService {

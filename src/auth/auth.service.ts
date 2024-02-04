@@ -20,6 +20,7 @@ export class AuthService {
       name: user.name,
       email: user.email,
     };
+
     return res
       .cookie('TOKEN', this.jwtService.sign(payload))
       .redirect(this.configService.get<string>(ENV_CLIENT_URL_KEY));
