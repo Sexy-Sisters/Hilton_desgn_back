@@ -53,6 +53,7 @@ export class OrdersService {
 
     const order = await this.orderRepository.create({
       ...createOrderDto,
+      user: { id: userId },
       orderItems,
     });
 

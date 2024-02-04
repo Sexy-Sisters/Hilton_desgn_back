@@ -27,6 +27,8 @@ import { MagazinesModule } from './magazines/magazines.module';
 import { Magazine } from './magazines/entities/magazine.entity';
 import { TopSearchedModule } from './top-searched/top-searched.module';
 import { TopSearched } from './top-searched/entities/top-searched.entity';
+import { EventsModule } from './events/events.module';
+import { Event } from './events/entities/event.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -51,6 +53,7 @@ import { TopSearched } from './top-searched/entities/top-searched.entity';
         OrderItemOption,
         Magazine,
         TopSearched,
+        Event,
       ],
       synchronize: true,
     }),
@@ -61,6 +64,7 @@ import { TopSearched } from './top-searched/entities/top-searched.entity';
     OrdersModule,
     MagazinesModule,
     TopSearchedModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
