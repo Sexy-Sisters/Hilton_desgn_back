@@ -29,7 +29,7 @@ export class Item {
   @Column()
   discountRate: number;
 
-  @Column({ type: 'text' })
+  @Column()
   thumbnailImage: string;
 
   @Column({ type: 'text', array: true, nullable: true })
