@@ -34,12 +34,10 @@ export class OptionGroup {
 }
 
 export class CreateItemDto {
-  @IsString()
-  @ApiProperty()
+  @ApiProperty({ type: String, nullable: true })
   name: string;
 
-  @IsString()
-  @ApiProperty()
+  @ApiProperty({ type: String, nullable: true })
   description: string;
 
   @IsNumber()
@@ -50,12 +48,12 @@ export class CreateItemDto {
   @ApiProperty()
   discountRate: number;
 
-  @IsString()
-  @ApiProperty()
+  @IsString({ always: true })
+  @ApiProperty({ nullable: true })
   category: string;
 
-  @IsString()
-  @ApiProperty()
+  @IsString({ always: true })
+  @ApiProperty({ nullable: true })
   subcategory: string;
 
   @IsArray({ always: false })
@@ -75,7 +73,7 @@ export class CreateItemDto {
   status: ItemStatus;
 
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ type: String, nullable: true })
   thumbnailImage: string;
 
   @IsArray({ always: false })
