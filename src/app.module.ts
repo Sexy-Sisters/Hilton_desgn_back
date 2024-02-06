@@ -29,6 +29,7 @@ import { TopSearchedModule } from './top-searched/top-searched.module';
 import { TopSearched } from './top-searched/entities/top-searched.entity';
 import { EventsModule } from './events/events.module';
 import { Event } from './events/entities/event.entity';
+import { CamelCaseNamingStrategy } from './database/camel-case-naming-stratgy';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -56,6 +57,7 @@ import { Event } from './events/entities/event.entity';
         Event,
       ],
       synchronize: true,
+      namingStrategy: new CamelCaseNamingStrategy(),
     }),
     AuthModule,
     UsersModule,

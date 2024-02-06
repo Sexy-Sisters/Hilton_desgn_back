@@ -32,10 +32,10 @@ export class Item {
   @Column()
   thumbnailImage: string;
 
-  @Column({ type: 'text', array: true })
+  @Column({ type: 'text', array: true, nullable: true })
   itemImages: string[];
 
-  @Column({ type: 'text', array: true })
+  @Column({ type: 'text', array: true, nullable: true })
   detailImages: string[];
 
   @Column()
@@ -44,7 +44,7 @@ export class Item {
   @Column()
   subcategory: string;
 
-  @Column({ type: 'text', array: true })
+  @Column({ type: 'text', array: true, nullable: true })
   colors: string[];
 
   @Column({ type: 'enum', enum: BusinessType, array: true })

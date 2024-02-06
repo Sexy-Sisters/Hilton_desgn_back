@@ -58,8 +58,8 @@ export class CreateItemDto {
   @ApiProperty()
   subcategory: string;
 
-  @IsArray()
-  @ApiProperty({ type: String, isArray: true })
+  @IsArray({ always: false })
+  @ApiProperty({ type: String, isArray: true, nullable: true })
   colors: string[];
 
   @IsEnum(BusinessType, { each: true })
@@ -78,12 +78,12 @@ export class CreateItemDto {
   @ApiProperty()
   thumbnailImage: string;
 
-  @IsArray()
-  @ApiProperty({ type: String, isArray: true })
+  @IsArray({ always: false })
+  @ApiProperty({ type: String, isArray: true, nullable: true })
   itemImages: string[];
 
-  @IsArray()
-  @ApiProperty({ type: String, isArray: true })
+  @IsArray({ always: false })
+  @ApiProperty({ type: String, isArray: true, nullable: true })
   detailImages: string[];
 
   @IsArray()
