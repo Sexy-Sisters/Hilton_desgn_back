@@ -16,12 +16,9 @@ export class OptionGroup {
   @Column()
   name: string;
 
-  @OneToMany(() => Option, (option) => option.optionGroup)
+  @OneToMany(() => Option, (option) => option.optionGroup, { cascade: true })
   options: Option[];
 
   @ManyToOne(() => Item, (item) => item.optionGroups)
   item: Item;
-
-  @Column()
-  itemId: string;
 }

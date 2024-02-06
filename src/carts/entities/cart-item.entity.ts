@@ -28,7 +28,7 @@ export class CartItem {
   @ManyToOne(() => Item, (item) => item.cartItems)
   item: Item;
 
-  @ManyToMany(() => Option, {})
+  @ManyToMany(() => Option, { cascade: true })
   @JoinTable()
   options: Option[];
 

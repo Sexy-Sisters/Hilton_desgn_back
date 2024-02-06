@@ -7,6 +7,7 @@ import { OptionGroup } from './entities/option-group.entity';
 import { CreateItemDto } from './dtos/request/create-item.dto';
 import { ItemType } from './enums/item-type.enums';
 import { ItemQuery } from './dtos/request/item-query.dto';
+import { UpdateItemDto } from './dtos/request/update-item.dto';
 
 @Injectable()
 export class ItemsService {
@@ -94,32 +95,13 @@ export class ItemsService {
       .getMany();
   }
 
-  async updateItem(id: string, updateItemDto: CreateItemDto): Promise<void> {
-    const { optionGroupList = [], ...itemData } = updateItemDto;
-
-    // Delete existing option groups
-    await this.optionGroupRepo.delete({ itemId: id });
-
-    // Update item
-    await this.itemRepository.update(id, itemData);
-
-    // Create new option groups
-    const item = await this.itemRepository.findOneOrFail({ where: { id } });
-
-    for (const group of optionGroupList) {
-      const newOptionGroup = new OptionGroup();
-      newOptionGroup.name = group.name;
-      newOptionGroup.item = item;
-      const createdOptionGroup =
-        await this.optionGroupRepo.save(newOptionGroup);
-
-      for (const optionData of group.optionList) {
-        const newOption = new Option();
-        Object.assign(newOption, optionData);
-        newOption.optionGroup = createdOptionGroup;
-        await this.optionRepository.save(newOption);
-      }
+  async updateItem(id: string, updateItemDto: UpdateItemDto): Promise<Item> {
+    const itemToUpdate = await this.itemRepository.findOne({ where: { id } });
+    if (!itemToUpdate) {
+      throw new Error('Item not found');
     }
+    await this.itemRepository.update(id, updateItemDto);
+    return await this.itemRepository.findOne({ where: { id } });
   }
 
   async getDetailItem(id: string) {
