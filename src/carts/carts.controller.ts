@@ -54,7 +54,7 @@ export class CartsController {
     @Param('id') cartItemId: string,
     @Body() changeQuantityDto: ChangeQuantityDto,
   ) {
-    return await this.cartsService.changeQueantity(
+    return await this.cartsService.changeQuantity(
       cartItemId,
       changeQuantityDto,
     );
