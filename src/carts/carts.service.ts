@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { CartItem } from './entities/cart-item.entity';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { ItemsService } from 'src/items/items.service';
+import { ChangeQuantityDto } from './dto/change-quantity.dto';
 @Injectable()
 export class CartsService {
   constructor(
@@ -80,5 +81,8 @@ export class CartsService {
 
   async deleteCartItemById(cartId: string) {
     return await this.cartItemRepository.delete(cartId);
+  }
+  async changeQuantity(id: string, changeQueantityDto: ChangeQuantityDto) {
+    return await this.cartItemRepository.update(id, changeQueantityDto);
   }
 }

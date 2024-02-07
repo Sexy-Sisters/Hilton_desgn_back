@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { CurrentUser } from 'src/decorators/current-user.decorators';
 import { User } from 'src/users/entities/user.entity';
 import { UserGuard } from 'src/auth/guards/User.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { ChangeQuantityDto } from './dto/change-quantity.dto';
 
 @Controller('carts')
 @ApiTags('carts')
@@ -46,5 +48,15 @@ export class CartsController {
     return await this.cartsService.deleteCartItemById(cartItemId);
   }
 
-  // @Put
+  @Patch('/:id')
+  @UseGuards(UserGuard)
+  async changeQuantity(
+    @Param('id') cartItemId: string,
+    @Body() changeQuantityDto: ChangeQuantityDto,
+  ) {
+    return await this.cartsService.changeQueantity(
+      cartItemId,
+      changeQuantityDto,
+    );
+  }
 }
