@@ -11,6 +11,7 @@ import { BusinessType } from '../enums/business-type.enums';
 import { OptionGroup } from './option-group.entity';
 import { CartItem } from 'src/carts/entities/cart-item.entity';
 import { OrderItem } from 'src/orders/entities/order-item.entity';
+import { ProductionMethod } from '../enums/production-method.enum';
 
 @Entity()
 export class Item {
@@ -67,4 +68,11 @@ export class Item {
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.item)
   orderItems: OrderItem[];
+
+  @Column({
+    type: 'enum',
+    enum: ProductionMethod,
+    default: ProductionMethod.MANUFACTURE,
+  })
+  productionMethod: ProductionMethod;
 }

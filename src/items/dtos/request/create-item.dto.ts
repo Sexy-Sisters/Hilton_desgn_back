@@ -10,6 +10,7 @@ import { BusinessType } from '../../enums/business-type.enums';
 import { ItemStatus } from '../../enums/item-status.enums';
 import { ItemType } from '../../enums/item-type.enums';
 import { ApiProperty } from '@nestjs/swagger';
+import { ProductionMethod } from 'src/items/enums/production-method.enum';
 
 export class Option {
   @IsString()
@@ -83,6 +84,10 @@ export class CreateItemDto {
   @IsArray({ always: false })
   @ApiProperty({ type: String, isArray: true, nullable: true })
   detailImages: string[];
+
+  @IsEnum(ProductionMethod)
+  @ApiProperty({ type: 'enum', enum: ProductionMethod })
+  productionMethod: ProductionMethod;
 
   @IsArray()
   @ValidateNested({ each: true })

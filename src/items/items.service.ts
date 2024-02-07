@@ -52,6 +52,7 @@ export class ItemsService {
       category = 'ALL',
       subcategory,
       businessType,
+      productionMethod,
     } = itemQuery;
 
     let price: 'ASC' | 'DESC' | undefined;
@@ -73,8 +74,13 @@ export class ItemsService {
       })
       .andWhere(subcategory ? 'item.subcategory = :subcategory' : '1=1', {
         subcategory,
-      });
-
+      })
+      .andWhere(
+        productionMethod ? 'item.productionMethod = :productionMethod' : '1=1',
+        {
+          productionMethod,
+        },
+      );
     if (businessType) {
       queryBuilder.andWhere(':businessType = ANY(item.businessType)', {
         businessType,
@@ -86,7 +92,6 @@ export class ItemsService {
     if (createdAt) {
       queryBuilder.orderBy({ 'item.createdAt': createdAt });
     }
-
     const total = await queryBuilder.getCount();
     const totalPages = Math.ceil(total / pageSize);
 

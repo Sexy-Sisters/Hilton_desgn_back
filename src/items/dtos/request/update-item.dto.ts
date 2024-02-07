@@ -9,6 +9,7 @@ import { BusinessType } from '../../enums/business-type.enums';
 import { ItemStatus } from '../../enums/item-status.enums';
 import { ItemType } from '../../enums/item-type.enums';
 import { ApiProperty } from '@nestjs/swagger';
+import { ProductionMethod } from 'src/items/enums/production-method.enum';
 
 export class UpdateItemDto {
   @IsOptional()
@@ -75,4 +76,9 @@ export class UpdateItemDto {
   @IsArray()
   @ApiProperty({ type: String, isArray: true, required: false })
   detailImages?: string[];
+
+  @IsOptional()
+  @IsEnum(ProductionMethod)
+  @ApiProperty({ type: 'enum', enum: ProductionMethod })
+  productionMethod: ProductionMethod;
 }
