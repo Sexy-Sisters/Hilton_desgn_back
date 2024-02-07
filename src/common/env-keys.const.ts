@@ -4,6 +4,8 @@ export const ENV_DB_PASSWORD_KEY = 'DB_PASSWORD';
 export const ENV_DB_PORT_KEY = 'DB_PORT';
 export const ENV_DB_HOST_KEY = 'DB_HOST';
 
+export const ENV_PORT_KEY = 'PORT';
+
 export const ENV_KAKAO_CLIENTID_KEY = 'KAKAO_CLIENTID';
 export const ENV_KAKAO_SECRET_KEY_KEY = 'KAKAO_SECRET_KEY';
 export const ENV_KAKAO_CALLBACK_URL_KEY = 'KAKAO_CALLBACK_URL';
