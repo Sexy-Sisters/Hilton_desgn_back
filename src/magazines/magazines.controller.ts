@@ -22,7 +22,7 @@ export class MagazinesController {
     return await this.magazinesService.createMagazine(createMagazineDto);
   }
 
-  @Post('')
+  @Get('')
   async searchMagazine(@Query('q') q: string) {
     return await this.magazinesService.searchMagazine(q);
   }
