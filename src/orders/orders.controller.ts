@@ -29,6 +29,12 @@ export class OrdersController {
     return this.ordersService.createOrder(user.id, createOrderDto);
   }
 
+  @Get()
+  @UseGuards(UserGuard)
+  getMyOrders(@CurrentUser() user: User) {
+    return this.ordersService.getMyOrders(user.id);
+  }
+
   @Get(':id')
   findOrderDetail(@Param('id') id: string) {
     return this.ordersService.findOrderDetail(id);

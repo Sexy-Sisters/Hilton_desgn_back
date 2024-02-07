@@ -83,4 +83,11 @@ export class OrdersService {
     order.orderStatus = orderStatus;
     return this.orderRepository.save(order);
   }
+
+  async getMyOrders(userId: string) {
+    return await this.orderRepository.find({
+      where: { user: { id: userId } },
+      relations: ['orderItems', 'orderItems.orderItemOptions'],
+    });
+  }
 }
