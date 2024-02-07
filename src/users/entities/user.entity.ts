@@ -12,7 +12,7 @@ export class User extends Timestamp {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   image: string;
 
   @Column()

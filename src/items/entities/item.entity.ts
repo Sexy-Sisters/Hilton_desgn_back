@@ -39,10 +39,10 @@ export class Item {
   @Column({ type: 'text', array: true, nullable: true })
   detailImages: string[];
 
-  @Column({ nullable: true })
+  @Column()
   category: string;
 
-  @Column({ nullable: true })
+  @Column()
   subcategory: string;
 
   @Column({ type: 'text', array: true, nullable: true })
