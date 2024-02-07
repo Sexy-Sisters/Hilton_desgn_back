@@ -26,7 +26,7 @@ export class AuthController {
     return this.authService.OAuthLogin({ req, res });
   }
 
-  @Get('/test')
+  @Get('/user')
   @UseGuards(UserGuard, AdminGuard)
   async test(@CurrentUser() user: User) {
     return user;

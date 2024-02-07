@@ -41,7 +41,9 @@ export class ItemsService {
     }
   }
 
-  async getItemsWithFilter(itemQuery: ItemQuery): Promise<Item[]> {
+  async getItemsWithFilter(
+    itemQuery: ItemQuery,
+  ): Promise<{ items: Item[]; totalPage: number; total: number }> {
     const {
       q,
       page = 1,
@@ -49,6 +51,7 @@ export class ItemsService {
       order,
       category = 'ALL',
       subcategory,
+      businessType,
     } = itemQuery;
 
     let price: 'ASC' | 'DESC' | undefined;
@@ -72,6 +75,11 @@ export class ItemsService {
         subcategory,
       });
 
+    if (businessType) {
+      queryBuilder.andWhere(':businessType = ANY(item.businessType)', {
+        businessType,
+      });
+    }
     if (price) {
       queryBuilder.orderBy({ 'item.price': price });
     }
@@ -79,9 +87,15 @@ export class ItemsService {
       queryBuilder.orderBy({ 'item.createdAt': createdAt });
     }
 
-    queryBuilder.skip((page - 1) * pageSize).take(pageSize);
+    const total = await queryBuilder.getCount();
+    const totalPages = Math.ceil(total / pageSize);
 
-    return queryBuilder.getMany();
+    const items = await queryBuilder
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getMany();
+
+    return { items, totalPage: totalPages, total };
   }
 
   async getRecommendItems(limit?: number): Promise<Item[]> {

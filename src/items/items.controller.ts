@@ -19,6 +19,7 @@ import { OptionsService } from './options.service';
 import { CreateOptionDto } from './dtos/request/create-option.dto';
 import { UpdateOptionDto } from './dtos/request/update-option.dto';
 import { CreateOptionGroupDto } from './dtos/request/create-option-group.dto';
+import { ItemPagingDto } from './dtos/response/item-paging.dto';
 @Controller('items')
 @ApiTags('items')
 export class ItemsController {
@@ -33,7 +34,7 @@ export class ItemsController {
   }
 
   @Get()
-  @ApiCreatedResponse({ type: ItemResponseDto, isArray: true })
+  @ApiCreatedResponse({ type: ItemPagingDto, isArray: true })
   async getItems(@Query() itemQuery: ItemQuery) {
     return await this.itemsService.getItemsWithFilter(itemQuery);
   }
