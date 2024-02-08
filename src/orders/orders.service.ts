@@ -56,7 +56,7 @@ export class OrdersService {
       user: { id: userId },
       orderItems,
     });
-
+    await this.cartsService.deleteAll(userId);
     return await this.orderRepository.save(order);
   }
 
@@ -85,9 +85,30 @@ export class OrdersService {
   }
 
   async getMyOrders(userId: string) {
-    return await this.orderRepository.find({
+    const orders = await this.orderRepository.find({
       where: { user: { id: userId } },
       relations: ['orderItems', 'orderItems.orderItemOptions'],
     });
+
+    const totalPrice = orders.reduce((sum, order) => {
+      return (
+        sum +
+        order.orderItems.reduce((sum, orderItem) => {
+          const optoinsPrice = orderItem.orderItemOptions.reduce(
+            (sum, orderItemOption) => {
+              return sum + orderItemOption.price;
+            },
+            0,
+          );
+          return (
+            sum +
+            ((orderItem.price + optoinsPrice) / 100) *
+              orderItem.discountRate *
+              orderItem.quantity
+          );
+        }, 0)
+      );
+    }, 0);
+    return { orders, totalPrice };
   }
 }

@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 
 import { Response, Request } from 'express';
-import { AdminGuard } from './guards/admin.guard';
 import { UserGuard } from './guards/User.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorators';
 import { User } from 'src/users/entities/user.entity';
@@ -27,7 +26,7 @@ export class AuthController {
   }
 
   @Get('/user')
-  @UseGuards(UserGuard, AdminGuard)
+  @UseGuards(UserGuard)
   async test(@CurrentUser() user: User) {
     return user;
   }

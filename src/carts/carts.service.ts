@@ -32,6 +32,7 @@ export class CartsService {
 
     for (const optionId of optionIds) {
       const option = await this.itemsService.getOptionDetail(optionId);
+      console.log(option);
       if (item.id != option.optionGroup.item.id)
         throw new BadRequestException();
       cartItem.options.push(option);
@@ -84,5 +85,10 @@ export class CartsService {
   }
   async changeQuantity(id: string, changeQueantityDto: ChangeQuantityDto) {
     return await this.cartItemRepository.update(id, changeQueantityDto);
+  }
+
+  async deleteAll(userId: string) {
+    console.log(userId);
+    return await this.cartItemRepository.delete({ user: { id: userId } });
   }
 }
