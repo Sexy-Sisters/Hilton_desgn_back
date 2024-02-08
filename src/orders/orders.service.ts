@@ -89,26 +89,28 @@ export class OrdersService {
       where: { user: { id: userId } },
       relations: ['orderItems', 'orderItems.orderItemOptions'],
     });
-
-    const totalPrice = orders.reduce((sum, order) => {
-      return (
-        sum +
-        order.orderItems.reduce((sum, orderItem) => {
-          const optoinsPrice = orderItem.orderItemOptions.reduce(
-            (sum, orderItemOption) => {
-              return sum + orderItemOption.price;
-            },
-            0,
-          );
-          return (
-            sum +
-            ((orderItem.price + optoinsPrice) / 100) *
-              orderItem.discountRate *
-              orderItem.quantity
-          );
-        }, 0)
-      );
-    }, 0);
-    return { orders, totalPrice };
+    let totalPrice = 0;
+    const ordersWithTotalPrice = orders.map((order) => {
+      const price = order.orderItems.reduce((sum, orderItem) => {
+        const optoinsPrice = orderItem.orderItemOptions.reduce(
+          (sum, orderItemOption) => {
+            return sum + orderItemOption.price;
+          },
+          0,
+        );
+        return (
+          sum +
+          ((orderItem.price + optoinsPrice) / 100) *
+            orderItem.discountRate *
+            orderItem.quantity
+        );
+      }, 0);
+      totalPrice += price;
+      return {
+        ...order,
+        price,
+      };
+    });
+    return { orders: ordersWithTotalPrice, totalPrice };
   }
 }
