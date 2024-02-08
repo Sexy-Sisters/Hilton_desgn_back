@@ -60,7 +60,9 @@ export class Item {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => OptionGroup, (optionGroup) => optionGroup.item)
+  @OneToMany(() => OptionGroup, (optionGroup) => optionGroup.item, {
+    cascade: true,
+  })
   optionGroups: OptionGroup[];
 
   @OneToMany(() => CartItem, (cartItem) => cartItem.item)
