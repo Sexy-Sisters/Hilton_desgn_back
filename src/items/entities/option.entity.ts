@@ -12,6 +12,8 @@ export class Option {
   @Column()
   price: number;
 
-  @ManyToOne(() => OptionGroup, (optionGroup) => optionGroup.options)
+  @ManyToOne(() => OptionGroup, (optionGroup) => optionGroup.options, {
+    onDelete: 'CASCADE',
+  })
   optionGroup: OptionGroup;
 }

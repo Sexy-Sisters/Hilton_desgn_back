@@ -27,6 +27,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  app.enableCors({});
+  // 출처: //chobodeveloperkk.tistory.com/7 [수제 코드 제작소:티스토리]
   await app.listen(process.env[ENV_PORT_KEY]);
 }
 bootstrap();

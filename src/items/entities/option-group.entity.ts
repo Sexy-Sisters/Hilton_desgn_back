@@ -19,6 +19,8 @@ export class OptionGroup {
   @OneToMany(() => Option, (option) => option.optionGroup, { cascade: true })
   options: Option[];
 
-  @ManyToOne(() => Item, (item) => item.optionGroups)
+  @ManyToOne(() => Item, (item) => item.optionGroups, {
+    onDelete: 'CASCADE',
+  })
   item: Item;
 }
