@@ -106,9 +106,10 @@ export class ItemsService {
   async getRecommendItems(limit?: number): Promise<Item[]> {
     return await this.itemRepository
       .createQueryBuilder('item')
-      .where('item.type = :type1 OR item.type = :type2', {
+      .where('item.type = :type1 OR item.type = :type2 OR item.type = :type3', {
         type1: ItemType.RECOMMENDED,
         type2: ItemType.BEST_SELLER,
+        type3: ItemType.RECOMMENDED_CHEAP,
       })
       .take(limit)
       .getMany();
