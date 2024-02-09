@@ -31,8 +31,11 @@ export class OrdersController {
 
   @Get()
   @UseGuards(UserGuard)
-  getMyOrders(@CurrentUser() user: User) {
-    return this.ordersService.getMyOrders(user.id);
+  getMyOrders(
+    @CurrentUser() user: User,
+    @Body() { orderStatus }: { orderStatus: OrderStatus },
+  ) {
+    return this.ordersService.getMyOrders(user.id, orderStatus);
   }
 
   @Get(':id')
