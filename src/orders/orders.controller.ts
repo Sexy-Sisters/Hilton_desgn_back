@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Put,
+  Query,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -31,8 +32,11 @@ export class OrdersController {
 
   @Get()
   @UseGuards(UserGuard)
-  getMyOrders(@CurrentUser() user: User) {
-    return this.ordersService.getMyOrders(user.id);
+  getMyOrders(
+    @CurrentUser() user: User,
+    @Query() { orderStatus }: { orderStatus: OrderStatus },
+  ) {
+    return this.ordersService.getMyOrders(user.id, orderStatus);
   }
 
   @Get(':id')
