@@ -70,8 +70,30 @@ export class OrdersService {
       ],
     });
     if (!order) throw new NotFoundException();
-
-    return order;
+    let totalPrice = 0;
+    const orderItems = order.orderItems.map((orderItem) => {
+      const optionsPrice = orderItem.orderItemOptions.reduce(
+        (sum, orderItemOption) => {
+          return sum + orderItemOption.price;
+        },
+        0,
+      );
+      const finalPrice =
+        ((orderItem.price + optionsPrice) / 100) *
+        (100 - orderItem.discountRate) *
+        orderItem.quantity;
+      totalPrice += finalPrice;
+      return {
+        optionsPrice,
+        finalPrice,
+        ...orderItem,
+      };
+    }, 0);
+    return {
+      ...order,
+      orderItems,
+      totalPrice,
+    };
   }
 
   async changeOrderStatus(orderId: string, orderStatus: OrderStatus) {
