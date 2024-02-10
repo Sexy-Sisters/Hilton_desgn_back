@@ -84,11 +84,22 @@ export class OrdersService {
     return this.orderRepository.save(order);
   }
 
-  async getMyOrders(userId: string) {
-    const orders = await this.orderRepository.find({
-      where: { user: { id: userId } },
-      relations: ['orderItems', 'orderItems.orderItemOptions'],
-    });
+  async getMyOrders(userId: string, orderStatus?: OrderStatus | null) {
+    const orders = !orderStatus
+      ? await this.orderRepository.find({
+          where: { user: { id: userId } },
+          relations: ['orderItems', 'orderItems.orderItemOptions'],
+          order: {
+            createdAt: 'DESC',
+          },
+        })
+      : await this.orderRepository.find({
+          where: { user: { id: userId }, orderStatus },
+          relations: ['orderItems', 'orderItems.orderItemOptions'],
+          order: {
+            createdAt: 'DESC',
+          },
+        });
     const ordersWithTotalPrice = orders.map((order) => {
       let totalPrice = 0;
       const orderItems = order.orderItems.map((orderItem) => {
