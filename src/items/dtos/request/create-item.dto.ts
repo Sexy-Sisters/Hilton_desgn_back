@@ -2,6 +2,7 @@ import {
   IsArray,
   IsEnum,
   IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -85,6 +86,7 @@ export class CreateItemDto {
   @ApiProperty({ type: String, isArray: true, nullable: true })
   detailImages: string[];
 
+  @IsOptional()
   @IsEnum(ProductionMethod)
   @ApiProperty({ type: 'enum', enum: ProductionMethod })
   productionMethod: ProductionMethod;
