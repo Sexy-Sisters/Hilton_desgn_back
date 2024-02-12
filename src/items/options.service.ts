@@ -43,11 +43,11 @@ export class OptionsService {
   }
 
   async deleteOption(optionId: string) {
-    const optionGroup = await this.optionRepository.findOne({
+    const option = await this.optionRepository.findOne({
       where: { id: optionId },
     });
-    if (!optionGroup) throw new NotFoundException('optionGroup not fount');
-    this.optionGroupRepo.delete(optionId);
+    if (!option) throw new NotFoundException('option is not fount');
+    this.optionRepository.delete(optionId);
     return;
   }
 
