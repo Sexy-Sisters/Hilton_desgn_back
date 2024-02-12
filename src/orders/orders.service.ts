@@ -78,7 +78,8 @@ export class OrdersService {
     await this.orderRepository.update({
       id : orderId
     }, {
-      depositDeadLineTime
+      depositDeadLineTime,
+      depositCheckRequest : false
     });
   }
 
