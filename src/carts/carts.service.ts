@@ -56,8 +56,10 @@ export class CartsService {
     const items = await this.cartItemRepository.find({
       where: { user: { id: userId } },
       relations: ['options', 'options.optionGroup', 'item'],
+      order: {
+        createdAt: 'DESC',
+      },
     });
-    console.log(items);
     return items.map((item) => {
       return {
         ...item,
@@ -67,7 +69,6 @@ export class CartsService {
             optionGroupName: option.optionGroup.name,
           };
           delete ret.optionGroup;
-
           return ret;
         }),
       };

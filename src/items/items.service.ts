@@ -18,12 +18,12 @@ export class ItemsService {
     @InjectRepository(OptionGroup)
     private readonly optionGroupRepo: Repository<OptionGroup>,
   ) {}
-  async createItem(createItemDto: CreateItemDto): Promise<void> {
+  async createItem(createItemDto: CreateItemDto): Promise<Item> {
     const newItem = new Item();
     Object.assign(newItem, createItemDto);
     const createdItem = await this.itemRepository.save(createItemDto);
 
-    // return createdItem;
+    return createdItem;
 
     // for (const group of optionGroupList) {
     //   const newOptionGroup = new OptionGroup();
