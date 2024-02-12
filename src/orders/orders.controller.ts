@@ -16,7 +16,6 @@ import { User } from 'src/users/entities/user.entity';
 import { UserGuard } from 'src/auth/guards/User.guard';
 import { OrderStatus } from './enums/order-status.enums';
 import { ApiTags } from '@nestjs/swagger';
-import { ToggleDepositCheckRequestDto } from './dto/toggleDepositCheckRequest.dto';
 
 @Controller('orders')
 @ApiTags('orders')
@@ -40,8 +39,8 @@ export class OrdersController {
 
   @Put(':id/toggleDepositCheckRequest')
   @UseGuards(UserGuard)
-  toggleDepositCheckRequestStatus(@Param('id') orderId : string, @Body() body : ToggleDepositCheckRequestDto) {
-    return this.ordersService.toggleDepositCheckRequestStatus(orderId, body.depositCheckRequestStatus);
+  toggleDepositCheckRequestStatus(@Param('id') orderId : string) {
+    return this.ordersService.toggleDepositCheckRequestStatus(orderId);
   }
 
   @Get()

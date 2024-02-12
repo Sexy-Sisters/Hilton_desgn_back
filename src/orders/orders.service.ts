@@ -74,7 +74,7 @@ export class OrdersService {
     });
     if(!order) new NotFoundException();
     const depositDeadLineTime = new Date();
-    depositDeadLineTime.setTime(depositDeadLineTime.getTime() + 86400); //24시간 뒤
+    depositDeadLineTime.setTime(depositDeadLineTime.getTime() + (86400 * 1000)); //24시간 뒤
     await this.orderRepository.update({
       id : orderId
     }, {
@@ -82,7 +82,7 @@ export class OrdersService {
     });
   }
 
-  async toggleDepositCheckRequestStatus(orderId : string, depositCheckRequestStatus : boolean) {
+  async toggleDepositCheckRequestStatus(orderId : string) {
     const order = await this.orderRepository.findOne({
       where : {
         id : orderId
@@ -93,7 +93,7 @@ export class OrdersService {
     await this.orderRepository.update({
       id : orderId
     }, {
-      depositCheckRequest : depositCheckRequestStatus
+      depositCheckRequest : !order.depositCheckRequest
     });
   }
 
