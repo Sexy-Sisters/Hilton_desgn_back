@@ -7,6 +7,7 @@ import {
   Param,
   Put,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -15,6 +16,7 @@ import { User } from 'src/users/entities/user.entity';
 import { UserGuard } from 'src/auth/guards/User.guard';
 import { OrderStatus } from './enums/order-status.enums';
 import { ApiTags } from '@nestjs/swagger';
+import { ToggleDepositCheckRequestDto } from './dto/toggleDepositCheckRequest.dto';
 
 @Controller('orders')
 @ApiTags('orders')
@@ -28,6 +30,18 @@ export class OrdersController {
     @Body() createOrderDto: CreateOrderDto,
   ) {
     return this.ordersService.createOrder(user.id, createOrderDto);
+  }
+
+  @Put(':id/extendDepositDeadLineTime')
+  @UseGuards(UserGuard)
+  extendDepositDeadLineTime(@Param('id') orderId : string) {
+    return this.ordersService.extendDepositDeadLineTime(orderId);
+  }
+
+  @Put(':id/toggleDepositCheckRequest')
+  @UseGuards(UserGuard)
+  toggleDepositCheckRequestStatus(@Param('id') orderId : string, @Body() body : ToggleDepositCheckRequestDto) {
+    return this.ordersService.toggleDepositCheckRequestStatus(orderId, body.depositCheckRequestStatus);
   }
 
   @Get()

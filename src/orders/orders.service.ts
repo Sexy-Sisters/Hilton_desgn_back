@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -50,14 +51,50 @@ export class OrdersService {
       await this.orderItemRepository.save(orderItem);
       orderItems.push(orderItem);
     }
+    const depositDeadLineTime = new Date();
+    depositDeadLineTime.setTime(depositDeadLineTime.getTime() + 86400 * 1000);
 
     const order = await this.orderRepository.create({
       ...createOrderDto,
       user: { id: userId },
+      depositDeadLineTime,
+      depositCheckRequest : false,
       orderItems,
     });
     await this.cartsService.deleteAll(userId);
     return await this.orderRepository.save(order);
+  }
+
+  //** 입급기한 연장 */
+  async extendDepositDeadLineTime(orderId : string) {
+    const order = await this.orderRepository.findOne({
+      where : {
+        id : orderId
+      }
+    });
+    if(!order) new NotFoundException();
+    const depositDeadLineTime = new Date();
+    depositDeadLineTime.setTime(depositDeadLineTime.getTime() + 86400); //24시간 뒤
+    await this.orderRepository.update({
+      id : orderId
+    }, {
+      depositDeadLineTime
+    });
+  }
+
+  async toggleDepositCheckRequestStatus(orderId : string, depositCheckRequestStatus : boolean) {
+    const order = await this.orderRepository.findOne({
+      where : {
+        id : orderId
+      }
+    });
+    if(!order) new NotFoundException();
+    if(order.orderStatus !== OrderStatus.BEGIN_CHECKOUT) new ConflictException();
+    await this.orderRepository.update({
+      id : orderId
+    }, {
+      depositCheckRequest : depositCheckRequestStatus
+    });
   }
 
   async findOrderDetail(orderId: string) {
@@ -101,7 +138,6 @@ export class OrdersService {
       where: { id: orderId },
     });
     if (!order) throw new NotFoundException();
-
     order.orderStatus = orderStatus;
     return this.orderRepository.save(order);
   }

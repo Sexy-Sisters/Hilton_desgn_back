@@ -31,6 +31,16 @@ export class Order {
   @Column()
   depositor: string;
 
+  @Column({
+    nullable : true,
+  })
+  depositDeadLineTime : Date;
+
+  @Column({
+    default : false,
+  })
+  depositCheckRequest : Boolean;
+
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
   orderItems: OrderItem[];
 
