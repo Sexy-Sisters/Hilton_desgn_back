@@ -19,26 +19,26 @@ export class ItemsService {
     private readonly optionGroupRepo: Repository<OptionGroup>,
   ) {}
   async createItem(createItemDto: CreateItemDto): Promise<void> {
-    const { optionGroupList = [], ...data } = createItemDto;
-
     const newItem = new Item();
-    Object.assign(newItem, data);
-    const createdItem = await this.itemRepository.save(newItem);
+    Object.assign(newItem, createItemDto);
+    const createdItem = await this.itemRepository.save(createItemDto);
 
-    for (const group of optionGroupList) {
-      const newOptionGroup = new OptionGroup();
-      newOptionGroup.name = group.name;
-      newOptionGroup.item = createdItem;
-      const createdOptionGroup =
-        await this.optionGroupRepo.save(newOptionGroup);
+    // return createdItem;
 
-      for (const optionData of group.optionList) {
-        const newOption = new Option();
-        Object.assign(newOption, optionData);
-        newOption.optionGroup = createdOptionGroup;
-        await this.optionRepository.save(newOption);
-      }
-    }
+    // for (const group of optionGroupList) {
+    //   const newOptionGroup = new OptionGroup();
+    //   newOptionGroup.name = group.name;
+    //   newOptionGroup.item = createdItem;
+    //   const createdOptionGroup =
+    //     await this.optionGroupRepo.save(newOptionGroup);
+
+    //   for (const optionData of group.optionList) {
+    //     const newOption = new Option();
+    //     Object.assign(newOption, optionData);
+    //     newOption.optionGroup = createdOptionGroup;
+    //     await this.optionRepository.save(newOption);
+    //   }
+    // }
   }
 
   async getItemsWithFilter(

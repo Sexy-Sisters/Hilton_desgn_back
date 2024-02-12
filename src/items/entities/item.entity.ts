@@ -39,7 +39,9 @@ export class Item {
   @Column({ type: 'text', array: true, nullable: true })
   detailImages: string[];
 
-  @Column()
+  @Column({
+    default : ""
+  })
   category: string;
 
   @Column()

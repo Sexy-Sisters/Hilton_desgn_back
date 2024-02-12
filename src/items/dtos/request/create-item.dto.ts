@@ -12,6 +12,7 @@ import { ItemStatus } from '../../enums/item-status.enums';
 import { ItemType } from '../../enums/item-type.enums';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductionMethod } from 'src/items/enums/production-method.enum';
+import { DefaultValuePipe } from '@nestjs/common';
 
 export class Option {
   @IsString()
@@ -54,9 +55,9 @@ export class CreateItemDto {
   @ApiProperty({ nullable: true })
   category: string;
 
-  @IsString({ always: true })
+  @IsString()
   @ApiProperty({ nullable: true })
-  subcategory: string;
+  subcategory?: string;
 
   @IsArray({ always: false })
   @ApiProperty({ type: String, isArray: true, nullable: true })
@@ -74,26 +75,28 @@ export class CreateItemDto {
   @ApiProperty({ enum: ItemStatus })
   status: ItemStatus;
 
+  @IsOptional()
   @IsString()
   @ApiProperty({ type: String, nullable: true })
   thumbnailImage: string;
 
+  @IsOptional()
   @IsArray({ always: false })
   @ApiProperty({ type: String, isArray: true, nullable: true })
-  itemImages: string[];
-
-  @IsArray({ always: false })
-  @ApiProperty({ type: String, isArray: true, nullable: true })
-  detailImages: string[];
+  itemImages?: string[];
 
   @IsOptional()
+  @IsArray({ always: false })
+  @ApiProperty({ type: String, isArray: true, nullable: true })
+  detailImages?: string[];
+
   @IsEnum(ProductionMethod)
   @ApiProperty({ type: 'enum', enum: ProductionMethod })
   productionMethod: ProductionMethod;
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => OptionGroup)
-  @ApiProperty({ type: OptionGroup, isArray: true })
-  optionGroupList: OptionGroup[];
+  // @IsArray()
+  // @ValidateNested({ each: true })
+  // @Type(() => OptionGroup)
+  // @ApiProperty({ type: OptionGroup, isArray: true })
+  // optionGroupList: OptionGroup[];
 }
