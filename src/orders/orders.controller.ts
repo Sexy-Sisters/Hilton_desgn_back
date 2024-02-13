@@ -16,6 +16,7 @@ import { User } from 'src/users/entities/user.entity';
 import { UserGuard } from 'src/auth/guards/User.guard';
 import { OrderStatus } from './enums/order-status.enums';
 import { ApiTags } from '@nestjs/swagger';
+import { changeAddressDto } from './dto/change-address.dto';
 
 @Controller('orders')
 @ApiTags('orders')
@@ -29,6 +30,16 @@ export class OrdersController {
     @Body() createOrderDto: CreateOrderDto,
   ) {
     return this.ordersService.createOrder(user.id, createOrderDto);
+  }
+
+  @Put(':id')
+  @UseGuards(UserGuard)
+  changeAddress(
+    @Param('id') id: string,
+    @Body() changeAddressDto: changeAddressDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.ordersService.changeAddress(id, user.id, changeAddressDto);
   }
 
   @Put(':id/extendDepositDeadLineTime')

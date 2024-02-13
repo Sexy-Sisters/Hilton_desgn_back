@@ -12,6 +12,7 @@ import { Repository } from 'typeorm';
 import { OrderItem } from './entities/order-item.entity';
 import { OrderItemOption } from './entities/order-item-option.entity';
 import { OrderStatus } from './enums/order-status.enums';
+import { changeAddressDto } from './dto/change-address.dto';
 
 @Injectable()
 export class OrdersService {
@@ -25,6 +26,21 @@ export class OrdersService {
     private readonly orderItemOptionRepository: Repository<OrderItemOption>,
   ) {}
 
+  async changeAddress(
+    id: string,
+    userId: string,
+    changeAddressDto: changeAddressDto,
+  ) {
+    const order = await this.orderRepository.findOne({
+      where: { user: { id: userId }, id },
+    });
+    if (!order) {
+      throw new NotFoundException('order NOt FOund');
+    }
+
+    await this.orderRepository.update(id, changeAddressDto);
+    return await this.orderRepository.findOne({ where: { id } });
+  }
   async createOrder(userId: string, createOrderDto: CreateOrderDto) {
     const cartItems = await this.cartsService.getMyCartItems(userId);
     if (cartItems.length == 0) throw new BadRequestException();
@@ -151,13 +167,13 @@ export class OrdersService {
   }
 
   async deleteOrder(orderId: string, userId: string) {
-    const order = this.orderRepository.findOne({
+    const order = await this.orderRepository.findOne({
       where: { user: { id: userId }, id: orderId },
     });
     if (!order) {
       throw new NotFoundException('order NOt FOund');
     }
-    this.orderRepository.delete(orderId);
+    await this.orderRepository.delete(orderId);
     return;
   }
   async getMyOrders(userId: string, orderStatus?: OrderStatus | null) {
