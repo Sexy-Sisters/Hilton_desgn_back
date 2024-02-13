@@ -7,7 +7,7 @@ import {
   Param,
   Put,
   Query,
-  UsePipes,
+  Delete,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -33,16 +33,20 @@ export class OrdersController {
 
   @Put(':id/extendDepositDeadLineTime')
   @UseGuards(UserGuard)
-  extendDepositDeadLineTime(@Param('id') orderId : string) {
+  extendDepositDeadLineTime(@Param('id') orderId: string) {
     return this.ordersService.extendDepositDeadLineTime(orderId);
   }
 
   @Put(':id/toggleDepositCheckRequest')
   @UseGuards(UserGuard)
-  toggleDepositCheckRequestStatus(@Param('id') orderId : string) {
+  toggleDepositCheckRequestStatus(@Param('id') orderId: string) {
     return this.ordersService.toggleDepositCheckRequestStatus(orderId);
   }
-
+  @Delete(':id')
+  @UseGuards(UserGuard)
+  cancleOrder(@Param('id') orderId: string, @CurrentUser() user: User) {
+    return this.ordersService.deleteOrder(orderId, user.id);
+  }
   @Get()
   @UseGuards(UserGuard)
   getMyOrders(

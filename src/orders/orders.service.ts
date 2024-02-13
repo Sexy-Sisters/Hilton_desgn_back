@@ -58,7 +58,7 @@ export class OrdersService {
       ...createOrderDto,
       user: { id: userId },
       depositDeadLineTime,
-      depositCheckRequest : false,
+      depositCheckRequest: false,
       orderItems,
     });
     await this.cartsService.deleteAll(userId);
@@ -66,36 +66,43 @@ export class OrdersService {
   }
 
   //** 입급기한 연장 */
-  async extendDepositDeadLineTime(orderId : string) {
+  async extendDepositDeadLineTime(orderId: string) {
     const order = await this.orderRepository.findOne({
-      where : {
-        id : orderId
-      }
+      where: {
+        id: orderId,
+      },
     });
-    if(!order) new NotFoundException();
+    if (!order) new NotFoundException();
     const depositDeadLineTime = new Date();
-    depositDeadLineTime.setTime(depositDeadLineTime.getTime() + (86400 * 1000)); //24시간 뒤
-    await this.orderRepository.update({
-      id : orderId
-    }, {
-      depositDeadLineTime,
-      depositCheckRequest : false
-    });
+    depositDeadLineTime.setTime(depositDeadLineTime.getTime() + 86400 * 1000); //24시간 뒤
+    await this.orderRepository.update(
+      {
+        id: orderId,
+      },
+      {
+        depositDeadLineTime,
+        depositCheckRequest: false,
+      },
+    );
   }
 
-  async toggleDepositCheckRequestStatus(orderId : string) {
+  async toggleDepositCheckRequestStatus(orderId: string) {
     const order = await this.orderRepository.findOne({
-      where : {
-        id : orderId
-      }
+      where: {
+        id: orderId,
+      },
     });
-    if(!order) new NotFoundException();
-    if(order.orderStatus !== OrderStatus.BEGIN_CHECKOUT) new ConflictException();
-    await this.orderRepository.update({
-      id : orderId
-    }, {
-      depositCheckRequest : !order.depositCheckRequest
-    });
+    if (!order) new NotFoundException();
+    if (order.orderStatus !== OrderStatus.BEGIN_CHECKOUT)
+      new ConflictException();
+    await this.orderRepository.update(
+      {
+        id: orderId,
+      },
+      {
+        depositCheckRequest: !order.depositCheckRequest,
+      },
+    );
   }
 
   async findOrderDetail(orderId: string) {
@@ -143,6 +150,16 @@ export class OrdersService {
     return this.orderRepository.save(order);
   }
 
+  async deleteOrder(orderId: string, userId: string) {
+    const order = this.orderRepository.findOne({
+      where: { user: { id: userId }, id: orderId },
+    });
+    if (!order) {
+      throw new NotFoundException('order NOt FOund');
+    }
+    this.orderRepository.delete(orderId);
+    return;
+  }
   async getMyOrders(userId: string, orderStatus?: OrderStatus | null) {
     const orders = !orderStatus
       ? await this.orderRepository.find({
