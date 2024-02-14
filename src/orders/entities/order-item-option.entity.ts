@@ -21,7 +21,9 @@ export class OrderItemOption {
   @Column()
   optionGroupName: string;
 
-  @ManyToOne(() => OrderItem, (orderItem) => orderItem.orderItemOptions)
+  @ManyToOne(() => OrderItem, (orderItem) => orderItem.orderItemOptions, {
+    onDelete: 'CASCADE',
+  })
   orderItem: OrderItem;
 
   @CreateDateColumn()
