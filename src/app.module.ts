@@ -31,6 +31,7 @@ import { EventsModule } from './events/events.module';
 import { Event } from './events/entities/event.entity';
 import { CamelCaseNamingStrategy } from './database/camel-case-naming-stratgy';
 import { CacheModule } from '@nestjs/cache-manager';
+import { SmsModule } from './sms/sms.module';
 @Module({
   imports: [
     CacheModule.register({ ttl: 600, max: 1000 }),
@@ -69,6 +70,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     MagazinesModule,
     TopSearchedModule,
     EventsModule,
+    SmsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
