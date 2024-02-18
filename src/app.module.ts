@@ -30,8 +30,10 @@ import { TopSearched } from './top-searched/entities/top-searched.entity';
 import { EventsModule } from './events/events.module';
 import { Event } from './events/entities/event.entity';
 import { CamelCaseNamingStrategy } from './database/camel-case-naming-stratgy';
+import { CacheModule } from '@nestjs/cache-manager';
 @Module({
   imports: [
+    CacheModule.register({ ttl: 600, max: 1000 }),
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
