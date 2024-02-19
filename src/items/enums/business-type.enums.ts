@@ -5,6 +5,7 @@ export enum BusinessType {
   SCHOOL = 'SCHOOL',
   OFFICE = 'OFFICE',
   PUBLIC = 'PUBLIC',
+  CAFETERIA = 'CAFETERIA',
   LOBBY = 'LOBBY',
   LOUNGE = 'LOUNGE',
 }
