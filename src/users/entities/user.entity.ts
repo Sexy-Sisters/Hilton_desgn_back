@@ -19,7 +19,7 @@ export class User extends Timestamp {
   email: string;
 
   @Column({ nullable: true })
-  phone: string;
+  phoneNumber: string;
 
   @Column()
   provider: string;

@@ -22,9 +22,16 @@ export class UsersService {
   }
 
   async getUserById(userId: string) {
-    const user = this.userRepository.findOneBy({ id: userId });
+    const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) throw new NotFoundException();
 
     return user;
+  }
+  async verifyPhone(userId: string, phoneNumber: string) {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) throw new NotFoundException();
+
+    await this.userRepository.update(userId, { phoneNumber });
+    return true;
   }
 }
