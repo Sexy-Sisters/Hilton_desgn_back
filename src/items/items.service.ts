@@ -53,6 +53,7 @@ export class ItemsService {
       subcategory,
       businessType,
       productionMethod,
+      itemType
     } = itemQuery;
 
     let price: 'ASC' | 'DESC' | undefined;
@@ -80,7 +81,11 @@ export class ItemsService {
         {
           productionMethod,
         },
-      );
+      )
+      .andWhere(itemType ? 'item.itemType = :itemType' : "1=1", {
+        itemType
+      })
+      ;
     if (businessType) {
       queryBuilder.andWhere(':businessType = ANY(item.businessType)', {
         businessType,
