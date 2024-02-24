@@ -10,15 +10,17 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async createUsers(createUserDto: CreateUserDto) {
-    const { email, provider } = createUserDto;
+  async findUser({email, provider}) {
     let user = await this.userRepository.findOne({
       where: { email, provider },
     });
-
-    if (!user) user = await this.userRepository.save(createUserDto);
-
     return user;
+  }
+
+
+  async createUsers(createUserDto: CreateUserDto) {
+    
+    return await this.userRepository.save(createUserDto);
   }
 
   async getUserById(userId: string) {

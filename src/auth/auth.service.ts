@@ -14,15 +14,20 @@ export class AuthService {
   ) {}
 
   async OAuthLogin({ req, res }: { req: any; res: Response }) {
-    const user = await this.userService.createUsers(req.user);
+    let user = await this.userService.findUser({
+      email : req?.user?.email,
+      provider : req?.user?.provider
+    });
+    if(!user) {
+      user = await this.userService.createUsers(req.user);
+    }
     const payload: TokenPayLoad = {
       userId: user.id,
       name: user.name,
       email: user.email,
     };
-
     return res
       .cookie('TOKEN', this.jwtService.sign(payload))
-      .redirect(this.configService.get<string>(ENV_CLIENT_URL_KEY));
+      .redirect(this.configService.get<string>(ENV_CLIENT_URL_KEY) +`?provider=${user?.provider}`);
   }
 }
