@@ -23,5 +23,5 @@ export class ItemQuery {
   @ApiProperty({ required: false })
   productionMethod: ProductionMethod;
   @ApiProperty({ required: false })
-  itemType: ItemType;
+  type: ItemType;
 }

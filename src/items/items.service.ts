@@ -53,7 +53,7 @@ export class ItemsService {
       subcategory,
       businessType,
       productionMethod,
-      itemType
+      type
     } = itemQuery;
 
     let price: 'ASC' | 'DESC' | undefined;
@@ -82,8 +82,8 @@ export class ItemsService {
           productionMethod,
         },
       )
-      .andWhere(itemType ? 'item.itemType = :itemType' : "1=1", {
-        itemType
+      .andWhere(type ? 'item.type = :type' : "1=1", {
+        type
       })
       ;
     if (businessType) {
