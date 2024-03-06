@@ -139,11 +139,13 @@ export class OrdersService {
         },
         0,
       );
-      const finalPrice =
-        ((orderItem.price + optionsPrice) / 100) *
-        (100 - orderItem.discountRate) *
+      const orderItemPrice = orderItem.price + optionsPrice;
+      const finalPrice = Math.round(orderItemPrice  / 100) * (100 - orderItem.discountRate) *
         orderItem.quantity;
+
+
       totalPrice += finalPrice;
+
       return {
         optionsPrice,
         finalPrice,
